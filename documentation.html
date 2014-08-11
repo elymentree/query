@@ -281,6 +281,26 @@ $query->save($data);
 </div>
 
 <div class='item-container'>
+<h2>INSERTING MULTIPLE DATA</h2>
+<h4><span class='func'>save_many(<span class='green'>array</span> <span class='blue'>$data</span>)</span> function  <span class='ver'>(ver 2.0)</span>. Make sure that the array indexes corresponds to your table and is inserting in same column</h4>
+<p>This function will run a single query with multiple insert, the <strong style="color:#793862 !important">save_many()</strong> function requires a multi-dimensional array with same structure per array </p>
+
+<p>Examples</p>
+<pre>
+$query = new QUERY(array('TABLE'=>'person::p','KEY'=>1));
+$multi_data  = array( 
+                     array('first_name'=>'Levi','gender'=>'male','location'=>'USA'),
+                     array('first_name'=>'Andrew','gender'=>'male','location'=>'CAN'),
+                     array('first_name'=>'Mark','gender'=>'male','location'=>'USA'),
+                     array('first_name'=>'Thomas','gender'=>'male','location'=>'CAN'),
+
+$query->save($multi_data); 
+
+<i>Notice that the indexes of the multi-dimensional array are the same</i>
+</pre>
+</div>
+
+<div class='item-container'>
 <h2>DELETING Records</h2>
 <h4><span class='func'>delete()</span> function. <small style='color: #F00'>(Warning: Always execute delete queries with caution)</small></h3>
 <p>Upon initializing the QUERY class, the construct opens the row specified by the keys. Calling the <strong style="color:#793862 !important">delete()</strong> function will delete the records. The <strong style="color:#793862 !important">delete()</strong> function follows key constraint rules</p>
