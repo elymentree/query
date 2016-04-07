@@ -12,31 +12,7 @@ To run demo included on this file:
 
  Author: Elizar M. Fores @ http://www.elizarflores.com
  
-
-<style>
- div.main-container{ font-family: verdana }   
-    
- div.item-container{ border:1px solid #CCC; margin: 5px; padding: 10px }   
- 
- div.main-container h1{ font-size: 30px; } 
- div.item-container h2{ font-size: 25px; text-decoration: underline; line-height: 2px; } 
- div.item-container h3{ font-size: 20px; color: #793862;  line-height: 5px;  }  
- div.item-container h3 small{ color: #336699 ; line-height: 5px;  } 
- div.item-container h3 small span, .green{ color:#799954 }  
- 
- div.item-container h4{  font-size: 18px; line-height: 5px;  }  
- div.item-container h4 span.func , .purple{color:#793862;}
- 
- 
- div.item-container p{ color: #666}
- div.item-container pre{box-shadow: 5px 5px 8px #CCC;padding: 10px; border-left: 5px solid #CCC }
- div.item-container pre i, .orange{color: #e56f1f }
- 
- 
- span.ver{color: #F00}
- .blue{color: #336699;}
-</style>
-
+<hr />
 
 <div class='main-container'>
 <h1>QUERY CLASS INITIALIZE</h1>
