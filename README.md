@@ -13,7 +13,7 @@ To run demo included on this file:
  Author: Elizar M. Fores @ http://www.elizarflores.com
  
 <hr />
-<title>QUERY DOCUMENTATION</title>
+<h1>QUERY DOCUMENTATION</h1>
 
 <div class='main-container'>
 <h1>QUERY CLASS INITIALIZE</h1>
