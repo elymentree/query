@@ -13,6 +13,31 @@ To run demo included on this file:
  Author: Elizar M. Fores @ http://www.elizarflores.com
  
 <hr />
+<title>QUERY DOCUMENTATION</title>
+<style>
+ div.main-container{ font-family: verdana }   
+    
+ div.item-container{ border:1px solid #CCC; margin: 5px; padding: 10px }   
+ 
+ div.main-container h1{ font-size: 30px; } 
+ div.item-container h2{ font-size: 25px; text-decoration: underline; line-height: 2px; } 
+ div.item-container h3{ font-size: 20px; color: #793862;  line-height: 5px;  }  
+ div.item-container h3 small{ color: #336699 ; line-height: 5px;  } 
+ div.item-container h3 small span, .green{ color:#799954 }  
+ 
+ div.item-container h4{  font-size: 18px; line-height: 5px;  }  
+ div.item-container h4 span.func , .purple{color:#793862;}
+ 
+ 
+ div.item-container p{ color: #666}
+ div.item-container pre{box-shadow: 5px 5px 8px #CCC;padding: 10px; border-left: 5px solid #CCC }
+ div.item-container pre i, .orange{color: #e56f1f }
+ 
+ 
+ span.ver{color: #F00}
+ .blue{color: #336699;}
+</style>
+
 
 <div class='main-container'>
 <h1>QUERY CLASS INITIALIZE</h1>
@@ -48,11 +73,13 @@ To run demo included on this file:
 
 <div class='item-container'>
 <h2>Adding SUB_KEYS</h2>
-<h3>SUB_KEY <small>(<span>type</span>: STRING)</small></h3>
+<h3>SUB_KEY <small>(<span>type</span>: MIXED)</small></h3>
+<h5>***New for <span class='ver'>(ver 2.1)</span> SUB_KEY<sup>1</sup> can now accept binded parameters. Declared as an array with index <strong>'CLAUSE'</strong> and <strong>'PARAM'</strong> (see example below)</h5>
 <p>Appends a SUB_KEY after the KEY clause</p>
 <pre>
 'SUB_KEY'=>' AND date_column IS NULL'
 'SUB_KEY'=>' OR date_column NOT NULL'
+<sup>1</sup>'SUB_KEY'=>array('CLAUSE'=>'OR gender:gender','PARAM'=>array('gender'=>'FEMALE'));
 </pre>
 </div>
 
@@ -160,6 +187,45 @@ array('ORDER'=>'CONCAT("date","time")::DESC'); <i>will return | ORDER BY CONCAT(
 </pre>
 </div>
 
+<div class='item-container'>
+<h2>Debug Mode</h2>
+<h3>DEBUG <small>(<span>type</span>: MIXED)</small></h3>
+<h4>***New for <span class='ver'>ver 2.1</span></h4>
+<p>Turns on debug mode (shows the query that executes when object is initialized) for the QUERY for the following SQL actions (SELECT, INSERT, UPDATE, DELETE)<br />Pass <strong>true</strong> to turn all. Pass an <strong>array</strong> to specify action</p> 
+<pre>
+'DEBUG'=>1 <i>Turns on debug mode for all action.</i>        
+'DEBUG'=>array('SELECT','UPDATE') <i>shows the SELECT and the UPDATE queries if any</i>
+</pre>
+</div>
+
+<div class='item-container'>
+<h2>Auto Execute</h2>
+<h3>AUTO_EXEC <small>(<span>type</span>: BOOLEAN)</small> default: TRUE</h3>
+<h4>***New for <span class='ver'>ver 2.1</span></h4>
+<p>When the QUERY is initialized, it auto executes a SELECT and returns the result. To prevent this from happening, set AUTO_EXEC to false, call the <strong class='purple'>render()</strong> to execute on a later time.</p> 
+<pre>
+'AUTO_EXEC'=>false <i>Prevents the execution of the SELECT statement and assigning the results to a return variable.</i>        
+</pre>
+Example
+<pre>
+$query = new QUERY(array('TABLE'=>'person','KEY'=>1,'AUTO_EXEC'=>false)); <i>Prevents the execution of the SELECT statement and assigning the results to a return variable.</i>        
+$query->fetchAll(); <i>Returns no result</i>
+
+$query->render();   <i>Executes the query</i>
+$query->fetchAll(); <i>Returns all records on table person</i>
+</pre>
+</div>
+
+<div class='item-container'>
+<h2>Initial SQL command execute</h2>
+<h3>INIT_EXEC <small>(<span>type</span>: STRING)</small></h3>
+<h4>***New for <span class='ver'>ver 2.1</span></h4>
+<p>Initial query executes before the construct (applies only when AUTO_EXEC is set to true) EG: </p> 
+<pre>
+'INIT_EXEC'=>'SET SESSION group_concat_max_len = 1000000' <i>Executes the query first before the construct.</i>        
+</pre>
+</div>
+
 
 <h1>QUERY CLASS function calls</h1>
 
@@ -250,8 +316,15 @@ $result = $query->fetchAll();
 
 <div class='item-container'>
 <h2>INSERTING and UPDATING DATA</h2>
-<h4><span class='func'>save(<span class='green'>array</span> <span class='blue'>$data</span>)</span> function. Make sure that the array indexes corresponds to your table</h4>
-<p>Upon initializing the QUERY class, the construct opens the row specified by the keys. If there is a result on the initialization, the <strong style="color:#793862 !important">save()</strong> function executes an UPDATE else, it executes an INSERT. </p>
+<h4><span class='func'>save(<span class='green'>array</span> <span class='blue'>$data</span>, [<span class='green'>string</span> <span class='blue'>$action='AUTO'</span>])</span> function. (Make sure that the array indexes corresponds to your table.)</h4>
+<h5><strong>***NEW on <span class='ver'>(ver 2.1)</span></strong>: Optional parameter <strong><span class='blue'>$action</span> (default 'AUTO') </strong> values defined below:</h5>
+    <ul style='font-size:small'>
+        <li>  AUTO: Determines if <strong class='purple'>save()</strong> will be an <strong>UPDATE</strong> or an <strong>INSERT</strong> based on the initialized  <strong class='blue'>$assets</strong><sup>1</sup>. If AUTO_EXEC is false, the query will process by force upon calling the function.</li>
+        <li>UPDATE: Forces an <strong>UPDATE</strong> query with <strong class='blue'>$data</strong> and keys based on the initialized <strong class='blue'>$assets</strong>.</li>
+        <li>INSERT: Forces an <strong>INSERT</strong> query of the <strong class='blue'>$data</strong></li>
+    </ul>
+
+<p><sup>1</sup> Upon initializing the QUERY class, (if AUTO_EXEC is true) the construct opens the row specified by the keys. If there is a result on the initialization, the <strong style="color:#793862 !important">save()</strong> function executes an UPDATE else, it executes an INSERT. </p>
 
 <p>Examples</p>
 <pre>
@@ -268,6 +341,26 @@ $data  = array('first_name'=>'Stephen','gender'=>'male','location'=>'USA');
 $query->save($data);
  
 <i>Because the initialized constructs does not point to a record, the <strong style="color:#793862 !important" >save()</strong> function executes an INSERT, thus creating a new record with first_name = 'Stephen','gender'=>'male','location'=>'USA'</i>
+</pre>
+
+<pre>
+$subkey = array('CLAUSE'=>"OR (gender=:gender AND name=:name)",'PARAM'=>array('gender'=>'male','name'=>'Mary'));
+$query  = new QUERY(array('TABLE'=>'person::p','KEY'=>1,'SUB_KEY'=>$subkey);
+
+$data   = array('location'=>'USA');
+$query->save($data);
+ 
+<i>Updates the column location for person 'Mary'</i>
+</pre>
+<pre>
+<i>Using the same initialize, I can force an INSERT by doing so: </i>
+$subkey = array('CLAUSE'=>"OR (gender=:gender AND name=:name)",'PARAM'=>array('gender'=>'male','name'=>'Mary'));
+$query  = new QUERY(array('TABLE'=>'person::p','KEY'=>1,'SUB_KEY'=>$subkey);
+
+$data   = array('first_name'=>'Levi','gender'=>'male','location'=>'USA');
+$query->save($data,'INSERT');
+ 
+<i>INSERTS new row to person for 'Levi'</i>
 </pre>
 </div>
 
@@ -354,4 +447,3 @@ $query->run($clause,$param);
 
 
 </div>
-
