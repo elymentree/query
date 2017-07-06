@@ -16,7 +16,18 @@ To run demo included on this file:
 <h1>QUERY DOCUMENTATION</h1>
 
 <div class='main-container'>
-<h1>QUERY CLASS INITIALIZE</h1>
+<h1>QUERY class initialize</h1>
+
+<div class='item-container'>
+<h2>Establishing DB CONNECTION</h2>
+<h3>CONNECTION <small>(<span>type</span>: array)</small></h3>
+<p>By default, the connection to the is established by 4 defined constants <strong>DB_HOST, DB_USER, DB_PASS, DB_NAME</strong>.</p>
+<h5>***New for <span class="ver">(ver 2.1)</span> This connection can be overridden anytime within the class construct <span class="ver">(ver 2.1 only)</span></h5>
+<pre>
+'CONNECTION'=>array('DB_HOST'=>'hostname','DB_USER'=>'username','DB_PASS'=>'password','DB_NAME'=>'database_name') <i>will disregard initial connection and establish new connection for the instance only</i>
+'DB'=>'database_name' <i><span class="ver">(ver 2.1)</span> Will switch databases using the same credentials as initialized previously</i>
+</pre>
+</div>
 
 <div class='item-container'>
 <h2>Declaring TABLES</h2>
